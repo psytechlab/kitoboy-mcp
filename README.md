@@ -8,6 +8,11 @@ dynamics, label explanation and contact-leak audits.
 The agent **never changes platform data** — a volunteer sets statuses manually
 in the Kitoboy UI. The server only wraps Kitoboy's READ endpoints.
 
+## Docs
+
+- [Architecture & deployment scenarios](docs/ARCHITECTURE.md) — diagrams, local vs cloud access.
+- [Runbook](docs/RUNBOOK.md) — local test stack, agent wiring, real integration.
+
 ## Tools
 
 | Tool | Kitoboy endpoint | Purpose |
