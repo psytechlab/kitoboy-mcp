@@ -1,0 +1,31 @@
+# Runs the MCP server as a sibling container inside Kitoboy's docker network so
+# it can reach `api:3052` and `zoo:8000` (zoo is not exposed outside the network).
+#
+# The external network name is the one Kitoboy's compose created. Docker prefixes
+# the network defined as `postgres` with the compose project name, e.g.
+# `kitoboy_postgres`. Confirm the exact name with `docker network ls` and adjust
+# `name:` below before `docker compose up`.
+services:
+  kitoboy-mcp:
+    build: .
+    container_name: kitoboy-mcp
+    env_file:
+      - .env
+    environment:
+      # In-network upstreams (these are also the built-in defaults).
+      KITOBOY_API_URL: http://api:3052
+      ZOO_URL: http://zoo:8000
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: "9000"
+    ports:
+      # Publish the Streamable HTTP endpoint to the host. Override the host port
+      # with MCP_PUBLISH_PORT if 9000 is already taken on the host.
+      - "${MCP_PUBLISH_PORT:-9000}:9000"
+    networks:
+      - kitoboy
+    restart: on-failure
+
+networks:
+  kitoboy:
+    external: true
+    name: kitoboy_postgres
